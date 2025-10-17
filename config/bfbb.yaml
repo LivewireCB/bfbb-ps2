@@ -1,0 +1,371 @@
+name: Battle for Bikini Bottom
+sha1: 32e3b7dda09fd8d7fcba4eb769fa17c08cea05df
+options:
+  basename: SLUS_206.80
+  target_path: iso/SLUS_206.80
+  elf_path: build/SLUS_206.80.elf
+  base_path: ..
+  platform: ps2
+  compiler: MWCCPS2
+
+  gp_value: 0x516470
+  ld_gp_expression: cod_SBSS_START + 0x7FF0
+
+  # asm_path: asm
+  # src_path: src
+  # build_path: build
+
+  ld_script_path: SLUS_206.80.ld
+  ld_dependencies: True
+  ld_wildcard_sections: True
+  ld_bss_contains_common: True
+
+  create_asm_dependencies: True
+
+  find_file_boundaries: False
+
+  o_as_suffix: True
+
+  symbol_addrs_path:
+    - symbol_addrs.txt
+  reloc_addrs_path:
+    - reloc_addrs.txt
+
+  # undefined_funcs_auto_path: undefined_funcs_auto.txt
+  # undefined_syms_auto_path: undefined_syms_auto.txt
+
+  extensions_path: tools/splat_ext
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+  named_regs_for_c_funcs: False
+
+  section_order:
+    - .text
+    # - .vutext
+    - .data
+    - .rodata
+    - .gcc_except_table
+    - .sbss
+    - .bss
+
+  auto_link_sections:
+    - .data
+    - .rodata
+    - .gcc_except_table
+    - .sbss
+    - .bss
+
+segments:
+  - name: cod
+    type: code
+    start: 0x000000
+    vram: 0x00100000
+    bss_size: 0x6907C
+    subalign: null
+    subsegments:
+      - [0x000000, asm, cod/000000] # .text
+      # splits are in the order that they appear in dwarf, which seems to be correct
+      - [0x29ed0, cpp, SB/Game/zAnimList]
+      - [0x2a380, cpp, SB/Game/zAssetTypes]
+      - [0x2b390, cpp, SB/Game/zCamera]
+      - [0x2f990, cpp, SB/Game/zConditional]
+      - [0x2fc30, cpp, SB/Game/zCutsceneMgr]
+      - [0x30a00, cpp, SB/Game/zDispatcher]
+      - [0x31db0, cpp, SB/Game/zEGenerator]
+      - [0x32ca0, cpp, SB/Game/zEnt]
+      # in the middle of zEnt in the dwarf there are 2 code ranges.
+      # one being xModel.h and the other being xEnt.h
+      # may need investigated
+      - [0x34fe0, cpp, SB/Game/zEntButton]
+      - [0x35e80, cpp, SB/Game/zEntDestructObj]
+      - [0x36f60, cpp, SB/Game/zEntHangable]
+      - [0x382b0, cpp, SB/Game/zEntPickup]
+      - [0x3dad0, cpp, SB/Game/zEntPlayer]
+      # in the middle of zEntPlayer there is a code range fo zNPCTypeCommon.h
+      # may need investigated, In the GC repo this function is weak
+      # list of files that have code ranges in zEntPlayer:
+      # xVec3Inlines.h, zNPCSupport.h, xVec3.h, zNPCSupport.h (again), xNPCBasic.h, 
+      # zNPCTypeCommon.h (again), xMath3.h, zNPCTypeTiki.h, (tired of adding duplicated), 
+      # zEntPlayerAnimationTable.h,
+      # again, my guess is that these are weak or inlined functions. Probably doesnt require
+      #any extra work but im documenting in case it does.
+      - [0x73680, cpp, SB/Game/zEntSimpleObj]
+      - [0x749f0, cpp, SB/Game/zEntTrigger]
+      - [0x752c0, cpp, SB/Game/zEnv]
+      - [0x756a0, cpp, SB/Game/zEvent]
+      - [0x756c0, cpp, SB/Game/zFeet]
+      - [0x757a0, cpp, SB/Game/zFMV]
+      - [0x758f0, cpp, SB/Game/zFX]
+      # xMath3.h, xEnt.h, xVec3.h
+      - [0x7a520, cpp, SB/Game/zGame]
+      - [0x7cf60, cpp, SB/Game/zGameExtras]
+      - [0x7ec60, cpp, SB/Game/zGameState]
+      - [0x7f110, cpp, SB/Game/zGust]
+      - [0x7fb70, cpp, SB/Game/zHud]
+      - [0x80610, cpp, SB/Game/zLight]
+      - [0x80e90, cpp, SB/Game/zLightEffect]
+      - [0x815b0, cpp, SB/Game/zLightning]
+      - [0x84fa0, cpp, SB/Game/zLOD]
+      - [0x859e0, cpp, SB/Game/zMain]
+      - [0x8a390, cpp, SB/Game/zMenu]
+      - [0x8b010, cpp, SB/Game/zMovePoint]
+      - [0x8b270, cpp, SB/Game/zMusic]
+      - [0x8c1d0, cpp, SB/Game/zParCmd]
+      - [0x8cd90, cpp, SB/Game/zParEmitter]
+      - [0x8ce70, cpp, SB/Game/zPendulum]
+      - [0x8d430, cpp, SB/Game/zPlatform]
+      - [0x917b0, cpp, SB/Game/zPortal]
+      - [0x918a0, cpp, SB/Game/zRenderState]
+      - [0x91d20, cpp, SB/Game/zRumble]
+      - [0x92210, cpp, SB/Game/zSaveLoad]
+      - [0x96ae0, cpp, SB/Game/zScene]
+      # xNPCBasic.h,
+      - [0x9c6b0, cpp, SB/Game/zScript]
+      - [0x9ca20, cpp, SB/Game/zSurface]
+      - [0x9e0d0, cpp, SB/Game/zUI]
+      - [0xa1a80, cpp, SB/Game/zUIFont]
+      - [0xa2880, cpp, SB/Game/zVar]
+      - [0xa3a20, cpp, SB/Game/zVolume]
+      - [0xa4250, cpp, SB/Game/zActionLine]
+      - [0xa4490, cpp, SB/Core/p2/iAnimSKB]
+      - [0xa5520, cpp, SB/Core/p2/iCollide]
+      - [0xa7ec0, cpp, SB/Core/p2/iCollideFast]
+      - [0xa7ed0, cpp, SB/Core/p2/iDraw]
+      - [0xa8080, cpp, SB/Core/p2/iEnv]
+      - [0xa95a0, cpp, SB/Core/p2/iFile]
+      - [0xaa3b0, cpp, SB/Core/p2/iFMV]
+      - [0xaa470, cpp, SB/Core/p2/iFX]
+      - [0xaafc0, cpp, SB/Core/p2/iLight]
+      - [0xab340, cpp, SB/Core/p2/iMath3]
+      - [0xacae0, cpp, SB/Core/p2/iMemMgr]
+      - [0xacd40, cpp, SB/Core/p2/iModel]
+      - [0xaf4a0, cpp, SB/Core/p2/iMorph]
+      - [0xb00f0, cpp, SB/Core/p2/iPad]
+      - [0xb0be0, cpp, SB/Core/p2/iParMgr]
+      - [0xb32b0, cpp, SB/Core/p2/isavegame]
+      - [0xb6a40, cpp, SB/Core/p2/iScrFX]
+      - [0xb8140, cpp, SB/Core/p2/iSnd]
+      - [0xb9cd0, cpp, SB/Core/p2/iSystem]
+      - [0xbaec0, cpp, SB/Core/p2/iTime]
+      - [0xbb180, cpp, SB/Core/p2/p2im3dhack]
+      - [0xbb190, cpp, SB/Core/p2/iAnim]
+      - [0xbba60, c, SB/Core/p2/ps2_mpeg/audiodec]
+      - [0xbc410, c, SB/Core/p2/ps2_mpeg/disp]
+      - [0xbcc00, c, SB/Core/p2/ps2_mpeg/ps2_mpeg]
+      - [0xbd4f0, c, SB/Core/p2/ps2_mpeg/read]
+      - [0xbd8a0, c, SB/Core/p2/ps2_mpeg/readbuf]
+      - [0xbda60, c, SB/Core/p2/ps2_mpeg/strfile]
+      - [0xbdbf0, c, SB/Core/p2/ps2_mpeg/vibuf]
+      - [0xbece0, c, SB/Core/p2/ps2_mpeg/videodec]
+      - [0xbf410, c, SB/Core/p2/ps2_mpeg/vobuf]
+      - [0xbf710, cpp, SB/Core/x/xBase]
+      - [0xbf840, cpp, SB/Core/x/xbinio]
+      - [0xc05b0, cpp, SB/Core/x/xBound]
+      - [0xc12a0, cpp, SB/Core/x/xCamera]
+      # xMath.h
+      - [0xc4fa0, cpp, SB/Core/x/xClimate]
+      # xVec3.h, xMath.h
+      - [0xc5870, cpp, SB/Core/x/xCollide]
+      - [0xce880, cpp, SB/Core/x/xCollideFast]
+      - [0xce9f0, cpp, SB/Core/x/xCutscene]
+      - [0xd0c30, cpp, SB/Core/x/xDebug]
+      - [0xd0cb0, cpp, SB/Core/x/xEnt]
+      - [0xd5890, cpp, SB/Core/x/xEntDrive]
+      - [0xd6ee0, cpp, SB/Core/x/xEntMotion]
+      - [0xda860, cpp, SB/Core/x/xEnv]
+      - [0xda940, cpp, SB/Core/x/xFFX]
+      - [0xdafd0, cpp, SB/Core/x/xFont]
+      # xFont.h
+      - [0xe41b0, cpp, SB/Core/x/xFX]
+      # containers.h
+      - [0xebe60, cpp, SB/Core/x/xhipio]
+      - [0xec9b0, cpp, SB/Core/x/xIni]
+      - [0xed210, cpp, SB/Core/x/xMath]
+      - [0xee0f0, cpp, SB/Core/x/xMath3]
+      # xVec3.h
+      - [0xf0380, cpp, SB/Core/x/xMemMgr]
+      - [0xf0c60, cpp, SB/Core/x/xModel]
+      - [0xf2480, cpp, SB/Core/x/xMorph]
+      - [0xf28f0, cpp, SB/Core/x/xMovePoint]
+      - [0xf2f00, cpp, SB/Core/x/xordarray]
+      - [0xf3480, cpp, SB/Core/x/xPad]
+      - [0xf4280, cpp, SB/Core/x/xPar]
+      - [0xf43f0, cpp, SB/Core/x/xParCmd]
+      - [0xf6200, cpp, SB/Core/x/xParGroup]
+      - [0xf6820, cpp, SB/Core/x/xParMgr]
+      - [0xf6900, cpp, SB/Core/x/xPartition]
+      - [0xf7090, cpp, SB/Core/x/xpkrsvc]
+      - [0xfa3b0, cpp, SB/Core/x/xQuickCull]
+      - [0xfacb0, cpp, SB/Core/x/xsavegame]
+      - [0xfd520, cpp, SB/Core/x/xScene]
+      # xMath3.h, xGrid.h, xMath.h
+      - [0x101140, cpp, SB/Core/x/xScrFx]
+      - [0x102fc0, cpp, SB/Core/x/xserializer]
+      - [0x104120, cpp, SB/Core/x/xShadow]
+      - [0x109050, cpp, SB/Core/x/xSnd]
+      - [0x10ab80, cpp, SB/Core/x/xSpline]
+      - [0x10c7d0, cpp, SB/Core/x/xstransvc]
+      - [0x10de20, cpp, SB/Core/x/xString]
+      - [0x10edc0, cpp, SB/Core/x/xSurface]
+      - [0x10efb0, cpp, SB/Core/x/xTRC]
+      - [0x10fc80, cpp, SB/Core/x/xutil]
+      - [0x110730, cpp, SB/Core/x/xVec3]
+      - [0x1108f0, cpp, SB/Core/x/xAnim]
+      - [0x17fb70, cpp, SB/Game/zThrown]
+      - [0x183340, cpp, SB/Core/x/xEvent]
+      - [0x198270, cpp, SB/Core/x/xHud]
+      - [0x199740, cpp, SB/Core/x/xHudFontMeter]
+      # xHudMeter.h
+      - [0x199d30, cpp, SB/Core/x/xHudMeter]
+      - [0x19a450, cpp, SB/Core/x/xHudModel]
+      - [0x19a6e0, cpp, SB/Core/x/xHudUnitMeter]
+      - [0x19acd0, cpp, SB/Game/zLasso]
+      - [0x19e580, cpp, SB/Game/zPickupTable]
+      - [0x19e660, cpp, SB/Core/x/xCounter]
+      - [0x19e9b0, cpp, SB/Core/x/xTimer]
+      - [0x19ee80, cpp, SB/Core/x/xFog]
+      - [0x19f040, cpp, SB/Core/x/xSFX]
+      - [0x19fb70, cpp, SB/Core/x/xGroup]
+      - [0x1a00f0, cpp, SB/Game/zEntCruiseBubble]
+      # xVec3.h, xMath.h, containers.h, xVec3Inlines.h, xMathINlines.h, xMath3.h, xGrid.h
+      - [0x1ad860, cpp, SB/Core/x/xSkyDome]
+      # zNPCGoalCommon.h, xBehaviour.h
+      - [0x1adba0, cpp, SB/Game/zNPCGoalRobo]
+      # xNPCBasic.h, zNPCTypeCommon.h, zNPCGoalStd.h, xBehaviour.h, zNPCGoalCommon.h, zNPCHazard.h, zNPCGoalRobo.h
+      - [0x1c5d20, cpp, SB/Core/x/xListItem]
+      - [0x1c5d60, cpp, SB/Game/zNPCGoals]
+      - [0x1c5dc0, cpp, SB/Game/zNPCGoalStd]
+      # zNPCTypeCommon.h, zNPCGoalTiki.h
+      - [0x1ca570, cpp, SB/Game/zNPCGoalTiki]
+      # zNPCGoalTiki.h
+      - [0x1cac90, cpp, SB/Game/zNPCGoalCommon]
+      # xBehaveMgr.h, 
+      - [0x1cb070, cpp, SB/Game/zNPCMessenger]
+      # zNPCTypeCommon.h
+      - [0x1cc7a0, cpp, SB/Game/zNPCMgr]
+      # zNPCTypeCommon.h, xNPCBasic.h, zNPCMgrpv.h, zNPCTypeAmbient.h
+      - [0x1cd510, cpp, SB/Game/zNPCTypeAmbient]
+      # zNPCTypeAmbient.h, zNPCTypeCommon.h
+      - [0x1cf5e0, cpp, SB/Game/zNPCTypeCommon]
+      - [0x1d5ed0, cpp, SB/Core/x/xListItem]
+      # zNPCTypeRobot.h
+      - [0x1d5fc0, cpp, SB/Game/zNPCTypeRobot]
+      # zNPCTypeRobot.h, 
+      - [0x1e6880, cpp, SB/Game/zNPCTypes]
+      # zNPCTypeTiki.h, 
+      - [0x1e6a40, cpp, SB/Game/zNPCTypeTiki]
+      # zNPCTypeVillager.h, 
+      - [0x1eaf50, cpp, SB/Game/zNPCTypeVillager]
+      # zNPCTypeVillager.h, zTaskbox.h, 
+      - [0x1f0360, cpp, SB/Core/x/xBehaveMgr]
+      # xBehaviour.h
+      - [0x1f1c60, cpp, SB/Core/x/xListItem]
+      - [0x1f1d50, cpp, SB/Core/x/xBehaviour]
+      - [0x1f1e30, cpp, SB/Core/x/xFactory]
+      # xNPCBasic.h
+      - [0x1f2420, cpp, SB/Core/x/xNPCBasic]
+      - [0x1f2eb0, cpp, SB/Core/x/xRMemData]
+      # xBehaveGoalSimple.h
+      - [0x1f3050, cpp, SB/Core/x/xBehaveGoalSimple]
+      # xBehaveGoalSimple.h
+      - [0x1f3360, cpp, SB/Game/zCollGeom]
+      - [0x1f3790, cpp, SB/Game/zEntPlayerBungeeState]
+      # xMath3.h, xVec3.h, xGrid.h, 
+      - [0x1fba90, cpp, SB/Core/x/xParSys]
+      # xPTankPool.h,
+      - [0x1fcb20, cpp, SB/Core/x/xParEmitter]
+      - [0x1fe370, cpp, SB/Core/x/xVolume]
+      - [0x1fe410, cpp, SB/Core/x/xParEmitterType]
+      # xVec3.h, xMath3.h, 
+      - [0x201910, cpp, SB/Core/x/xRenderState]
+      - [0x2019a0, cpp, SB/Core/x/xJSP]
+      - [0x201cc0, cpp, SB/Core/x/xClumpColl]
+      - [0x204500, cpp, SB/Core/x/xGrid]
+      - [0x205b90, cpp, SB/Core/x/xLightKit]
+      - [0x2060d0, cpp, SB/Game/zGrid]
+      - [0x206dc0, cpp, SB/Core/x/xEntBoulder]
+      - [0x20ae00, cpp, SB/Game/zEntPlayerOOBState]
+      # xMath2.h, zTalkbox.h, zNPCTypeDuplotron.h,
+      - [0x20e3e0, cpp, SB/Game/zNPCTypeDuplotron]
+      - [0x20f920, cpp, SB/Game/zGoo]
+      - [0x20fe40, cpp, SB/Game/zNPCGoalScript]
+      - [0x2103b0, cpp, SB/Game/zNPCSndTable]
+      - [0x210990, cpp, SB/Game/zCamMarker]
+      - [0x210a90, cpp, SB/Core/x/xModelBucket]
+      - [0x212030, cpp, SB/Game/zShrapnel]
+      # xVec3Inlines.h
+      - [0x216660, cpp, SB/Game/zNPCSpawner]
+      - [0x217f80, cpp, SB/Game/zEntTeleportBox]
+      - [0x219880, cpp, SB/Game/zNPCGoalDuplotron]
+      - [0x21a010, cpp, SB/Game/zBusStop]
+      - [0x21a530, cpp, SB/Game/zNPCSupport]
+      - [0x21d770, cpp, SB/Game/zTalkBox]
+      # xSnd.h, 
+      - [0x222720, cpp, SB/Game/zTextBox]
+      - [0x223af0, cpp, SB/Game/zTaskBox]
+      - [0x2242d0, cpp, SB/Game/zNPCTypeTest]
+      - [0x2246d0, cpp, SB/Game/zNPCGoalSubBoss]
+      # zNPCTypeBoss.h, 
+      - [0x224de0, cpp, SB/Game/zNPCTypeBoss]
+      - [0x225200, cpp, SB/Game/zNPCGoalBoss]
+      # zNPCTypeSubBoss.h, 
+      - [0x226050, cpp, SB/Game/zNPCTypeSubBoss]
+      - [0x226280, cpp, SB/Game/zNPCGoalVillager]
+      - [0x228e60, cpp, SB/Core/x/xUpdateCull]
+      - [0x229a60, cpp, SB/Core/p2/iFXGoo]
+      - [0x22a770, cpp, SB/Core/x/xShadowSimple]
+      - [0x22c2d0, cpp, SB/Game/zNPCTypeBossSandy]
+      - [0x2371c0, cpp, SB/Game/zDiscoFloor]
+      # xMathInlines.h, xMath.h
+      - [0x23b210, cpp, SB/Core/p2/iFXshadow]
+      - [0x23c530, cpp, SB/Game/zNPCTypeKingJelly]
+      # zNPCTypeKingJelly.h
+      - [0x24a550, cpp, SB/Core/p2/his/HisStubs]
+      - [0x24b620, cpp, SB/Core/p2/his/HISAPI]
+      - [0x24ba20, cpp, SB/Core/p2/iCutscene]
+      - [0x24c4c0, cpp, SB/Game/zNPCTypeBossSB2]
+      - [0x25a000, cpp, SB/Game/zNPCTypeBossSB1]
+      - [0x25c370, cpp, SB/Core/x/iCamera]
+      - [0x25d340, cpp, SB/Core/x/xJaw]
+      - [0x25d570, cpp, SB/Game/zNPCTypePrawn]
+      # zNPCTypePrawn.h
+      - [0x263aa0, cpp, SB/Game/zNPCTypeBossPlankton]
+      # xVec3.h, xMath2.h, zNPCTypeBossPlankton
+      - [0x26e6c0, cpp, SB/Game/zNPCTypeBossPatrick]
+      - [0x2788b0, cpp, SB/Core/p2/iVU0]
+      - [0x299d00, cpp, SB/Game/zParPTank]
+      - [0x29c190, cpp, SB/Game/zTaxi]
+      # zTaxi.h
+      - [0x29c7a0, cpp, SB/Game/zNPCTypeDutchman]
+      # zNPCTypeDutchman
+      - [0x2adcc0, cpp, SB/Game/zCameraFly]
+      - [0x2aded0, cpp, SB/Core/x/xCurveAsset]
+      - [0x2ae0a0, cpp, SB/Core/p2/iModelBucketPDS]
+      - [0x2ae650, cpp, SB/Core/x/xDecal]
+      - [0x2afc90, cpp, SB/Core/x/xPtankPool]
+      - [0x2b0950, cpp, SB/Core/x/xLaserBolt]
+      # xLaserBolt.h
+      - [0x2b3430, cpp, SB/Game/zCameraTweak]
+      - [0x2b3b20, cpp, SB/Game/zNPCSupplement]
+      - [0x2bde80, cpp, SB/Game/zNPCGoalAmbient]
+      - [0x2bf550, cpp, SB/Game/zNPCHazard]
+      - [0x2cd9b0, cpp, SB/Game/zNPCGlyph]
+      - [0x2ceb80, cpp, SB/Game/zNPCFXCinematic]
+      - [0x2d4cb0, cpp, SB/Game/zCombo]
+      - [0x2d5510, cpp, SB/Core/x/xHudText]
+      - [0x2d5d50, cpp, SB/Core/x/xCM]
+      - [0x2d7300, cpp, SB/Core/p2/iException]
+      - [0x3209C0, textbin, cod/3209C0] # .vutext
+      - [0x324680, data, cod/324680] # .data
+      - [0x350100, rodata, cod/350100] # .rodata
+      - [0x3B0780, gcc_except_table, cod/3B0780] # .gcc_except_table
+      - { type: sbss, vram: 0x004B0880, name: cod/004B0880 } # .sbss
+      - { type: bss, vram: 0x004B0F80, name: cod/004B0F80 } # .bss
+  - [0x111AE80]
+
+   # split addresses need to be file offsets not regular memory addresses
+   # - [address, language, path/to/file.cpp]
